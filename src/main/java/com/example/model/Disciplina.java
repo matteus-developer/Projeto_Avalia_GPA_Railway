@@ -7,11 +7,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
+@Table(name = "disciplina")
 public class Disciplina {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idDisciplina") //informa o nome real da coluna
 	private int idDisciplina;
+	@Column(name = "nomeDisciplina")
 	private String nomeDisciplina;
 	
 	public Disciplina() {
