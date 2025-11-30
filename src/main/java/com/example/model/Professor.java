@@ -12,46 +12,44 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "professor") // <-- IMPORTANTE
 public class Professor {
 
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idProfessor") // informa o nome real da coluna
+    @Column(name = "idProfessor")  // coluna do Railway
     private int idProfessor;
 
+    @Column(name = "nomeProfessor") // <-- obrigatório no Railway
     private String nomeProfessor;
+
+    @Column(name = "matriProfessor")
     private String matriProfessor;
+
+    @Column(name = "emailProfessor")
     private String emailProfessor;
+
+    @Column(name = "senhaProfessor")
     private String senhaProfessor;
 
-    @Column(name = "tipoProfessor", columnDefinition = "TINYINT")
-    private byte tipoProfessor; // 0, 1, 2, etc.
+    @Column(name = "tipoProfessor")
+    private byte tipoProfessor;
 
-    //@ManyToMany
-    //@JoinTable(
-   //     name = "professordisciplina", // nome da tabela intermediária
-    //    joinColumns = @JoinColumn(name = "idProfessor"), // FK do professor
-     //   inverseJoinColumns = @JoinColumn(name = "idDisciplina") // FK da disciplina
-    //)
-    //private List<Disciplina> disciplinas = new ArrayList<>();
-
-    @ManyToMany(fetch = FetchType.EAGER) // ADICIONE FETCHTYPE.EAGER
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-    name = "professordisciplina", 
-    joinColumns = @JoinColumn(name = "idProfessor"), 
-    inverseJoinColumns = @JoinColumn(name = "idDisciplina") 
-)
-private List<Disciplina> disciplinas = new ArrayList<>();
+        name = "professordisciplina", 
+        joinColumns = @JoinColumn(name = "idProfessor"), 
+        inverseJoinColumns = @JoinColumn(name = "idDisciplina")
+    )
+    private List<Disciplina> disciplinas = new ArrayList<>();
 
-    public Professor() {
-        super();
-    }
+    public Professor() {}
 
-    public Professor(int idProfessor, String nomeProfessor, String matriProfessor, String emailProfessor,
-                     String senhaProfessor, byte tipoProfessor) {
-        super();
+    public Professor(int idProfessor, String nomeProfessor, String matriProfessor, 
+                     String emailProfessor, String senhaProfessor, byte tipoProfessor) {
         this.idProfessor = idProfessor;
         this.nomeProfessor = nomeProfessor;
         this.matriProfessor = matriProfessor;
@@ -59,7 +57,7 @@ private List<Disciplina> disciplinas = new ArrayList<>();
         this.senhaProfessor = senhaProfessor;
         this.tipoProfessor = tipoProfessor;
     }
-
+    
     public int getIdProfessor() {
         return idProfessor;
     }
