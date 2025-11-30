@@ -1,0 +1,349 @@
+/* -------------------------------------------- */
+/* FONTE E PALETA - Importado do escopo global */
+/* -------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+    /* Fundos premium */
+    --cor-fundo-principal: linear-gradient(135deg, #0A0F1F 0%, #0D0D16 40%, #000000 100%);
+    --cor-cartao-fundo: rgba(255, 255, 255, 0.06);
+    --cor-borda-cartao: rgba(255, 255, 255, 0.10);
+    --cor-sombra-escura: rgba(0, 0, 0, 0.65);
+
+    /* Tipografia */
+    --cor-texto-principal: #E6E6E6;
+    --cor-texto-suave: #CFCFCF;
+
+    /* Destaques */
+    --cor-destaque-laranja: #FF7A45;
+    --cor-destaque-hover: #FFA675;
+    --cor-destaque-azul: #3B82F6;
+    --cor-destaque-azul-royal: #1F5AFF;
+
+    /* Acessibilidade */
+    --cor-erro: #FF4A4A;
+    --cor-sucesso: #3EE780;
+}
+
+/* -------------------------------------------- */
+/* Reset Básico e Fundo da Página                */
+/* -------------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: var(--cor-fundo-principal);
+    color: var(--cor-texto-principal);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    gap: 30px; 	
+}
+
+/* -------------------------------------------- */
+/* Contêiner de Cabeçalho (Form e Botão Voltar) */
+/* -------------------------------------------- */
+.header-container {
+    display: flex;
+    align-items: center; /* Alinha verticalmente no centro */
+    gap: 30px; /* Espaço entre o box e o botão */
+    width: 100%;
+    max-width: 900px; 
+    justify-content: center; /* Centraliza o conteúdo dentro da largura máxima */
+}
+
+/* -------------------------------------------- */
+/* Estilo de Títulos                             */
+/* -------------------------------------------- */
+h1 {
+    font-size: 2.2em;
+    font-weight: 700;
+    color: var(--cor-destaque-laranja);
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(255, 122, 69, 0.4);
+}
+
+/* -------------------------------------------- */
+/* Box de Cadastro (Formulário)                  */
+/* -------------------------------------------- */
+.box {
+    background: var(--cor-cartao-fundo);
+    border: 1px solid var(--cor-borda-cartao);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 30px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 15px 30px var(--cor-sombra-escura);
+    transition: transform 0.3s ease-in-out;
+	text-align: center;
+}
+
+.box:hover {
+    transform: translateY(-5px);
+}
+
+.box h1 {
+    color: var(--cor-texto-principal);
+    font-size: 1.6em;
+    margin-bottom: 25px;
+    text-shadow: none;
+    border-bottom: 2px solid var(--cor-destaque-azul-royal);
+    padding-bottom: 10px;
+    display: inline-block;
+	
+}
+
+/* -------------------------------------------- */
+/* Inputs e Botões (Gerais)                      */
+/* -------------------------------------------- */
+input[type="text"] {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--cor-borda-cartao);
+    border-radius: 8px;
+    color: var(--cor-texto-principal);
+    font-size: 1em;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]::placeholder {
+    color: var(--cor-texto-suave);
+    opacity: 0.7;
+}
+
+input[type="text"]:focus {
+    border-color: var(--cor-destaque-laranja);
+    box-shadow: 0 0 0 3px rgba(255, 122, 69, 0.3);
+    outline: none;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
+    font-size: 1em;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+/* Botão Salvar (Formulário) */
+.box form button {
+    background-color: var(--cor-destaque-azul-royal);
+    color: white;
+    box-shadow: 0 5px 15px rgba(31, 90, 255, 0.4);
+}
+
+.box form button:hover {
+    background-color: var(--cor-destaque-azul);
+    transform: translateY(-2px);
+    box-shadow: 0 7px 20px rgba(31, 90, 255, 0.6);
+}
+
+/* Botão Voltar */
+#btnVoltar {
+    background-color: transparent;
+    border: 2px solid var(--cor-texto-suave);
+    color: var(--cor-texto-suave);
+    padding: 10px 20px;
+}
+
+#btnVoltar:hover {
+    background-color: rgba(207, 207, 207, 0.1);
+    border-color: var(--cor-destaque-laranja);
+    color: var(--cor-destaque-laranja);
+    transform: scale(1.05);
+}
+
+/* -------------------------------------------- */
+/* Seção de Tabela e Filtro                      */
+/* -------------------------------------------- */
+.table {
+    background: var(--cor-cartao-fundo);
+    border: 1px solid var(--cor-borda-cartao);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 30px;
+    width: 100%;
+    max-width: 900px;
+    box-shadow: 0 15px 30px var(--cor-sombra-escura);
+}
+
+.table h1 {
+    font-size: 1.8em;
+    color: var(--cor-texto-principal);
+    border-bottom: 2px solid var(--cor-destaque-laranja);
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    display: inline-block;
+}
+
+/* Filtro de Busca */
+.filtro-container {
+    margin-bottom: 20px;
+}
+
+#campoBusca {
+    width: 100%;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--cor-borda-cartao);
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+/* -------------------------------------------- */
+/* Tabela de Disciplinas                         */
+/* -------------------------------------------- */
+/* Container para scroll da tabela */
+.table-scroll {
+    max-height: calc(6 * 50px); /* 6 linhas visíveis */
+    overflow-y: auto;
+}
+
+/* Mantém o layout da tabela */
+#tableDisciplina {
+    width: 100%;
+    border-collapse: separate; 
+    border-spacing: 0;
+    margin-top: 20px;
+}
+
+#tableDisciplina thead th {
+    background-color: var(--cor-destaque-laranja);
+    color: #0D0D16;
+    font-weight: 700;
+    padding: 15px 10px;
+    text-align: left;
+    font-size: 1em;
+    letter-spacing: 0.5px;
+}
+
+#tableDisciplina thead tr th:first-child {
+    border-top-left-radius: 8px;
+}
+
+#tableDisciplina thead tr th:last-child {
+    border-top-right-radius: 8px;
+}
+
+#tableDisciplina tbody tr {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--cor-borda-cartao);
+    transition: background-color 0.3s;
+}
+
+#tableDisciplina tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+#tableDisciplina tbody td {
+    padding: 15px 10px;
+    color: var(--cor-texto-principal);
+    vertical-align: middle;
+}
+
+/* Última linha sem borda inferior */
+#tableDisciplina tbody tr:last-child {
+    border-bottom: none;
+}
+
+/* -------------------------------------------- */
+/* Botão de Ação na Tabela (Excluir)             */
+/* -------------------------------------------- */
+.btn-excluir {
+    background-color: var(--cor-erro);
+    color: white;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    font-weight: 600;
+    box-shadow: 0 3px 10px rgba(255, 74, 74, 0.4);
+}
+
+.btn-excluir:hover {
+    background-color: #E03C3C; 
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(255, 74, 74, 0.6);
+}
+
+/* -------------------------------------------- */
+/* Responsividade                                */
+/* -------------------------------------------- */
+@media (max-width: 768px) {
+    body {
+        padding: 20px 10px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    .box, .table {
+        padding: 20px;
+    }
+
+    /* Ajuste para cabeçalho em telas pequenas */
+    .header-container {
+        flex-direction: column; /* Coloca os itens em coluna */
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .box {
+        max-width: 100%;
+    }
+
+    /* Ajuste para tabela em telas pequenas */
+    #tableDisciplina, #tableDisciplina tbody, #tableDisciplina thead, #tableDisciplina tr, #tableDisciplina th, #tableDisciplina td {
+        display: block;
+    }
+
+    #tableDisciplina thead {
+        /* Oculta o cabeçalho da tabela */
+        display: none;
+    }
+
+    #tableDisciplina tbody tr {
+        margin-bottom: 15px;
+        border: 1px solid var(--cor-borda-cartao);
+        border-radius: 8px;
+        background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    #tableDisciplina tbody td {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        text-align: right;
+        padding: 10px;
+        position: relative;
+    }
+
+    /* Adicionando rótulos (requer ajuste no JS para adicionar data-label) */
+    #tableDisciplina tbody td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        font-weight: 600;
+        color: var(--cor-destaque-laranja);
+    }
+    
+    #tableDisciplina tbody td:nth-child(1)::before { content: "Id"; }
+    #tableDisciplina tbody td:nth-child(2)::before { content: "Disciplina"; }
+    #tableDisciplina tbody td:nth-child(3)::before { content: "Ações"; }
+    
+    .btn-excluir {
+        width: 100%;
+        margin-top: 5px;
+    }
+}

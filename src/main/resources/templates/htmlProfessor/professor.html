@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Professor</title>
+    <link rel="stylesheet" th:href="@{/css/professor.css}">
+</head>
+
+<body>
+
+	<button id="btnVoltar" class="voltar">Voltar</button>
+<div class="container">
+
+    <div class="box-form">
+        <h1>Cadastro de Novo Professor</h1>
+
+        <form id="formProfessor">
+            <input type="text" id="idNomeProfessor" placeholder="Nome Completo" required>
+            <input type="email" id="idEmailProfessor" placeholder="Email do Professor" required>
+            <input type="password" id="idSenhaProfessor" placeholder="Senha" required>
+            <input type="text" id="idMatriProfessor" placeholder="Matrícula" required>
+
+            <select id="idTipoProfessor" required>
+                <option value="">Selecione o tipo</option>
+                <option value="0">Professor</option>
+                <option value="1">Coordenador</option>
+            </select>
+
+            <button type="submit">Salvar Professor</button>
+        </form>
+    </div>
+      
+    <div class="box-tables-group"> 
+    
+        <div class="box-table">
+            <h2>Selecione uma disciplina para professor</h2>
+            <input type="text" id="filtroDisciplina" placeholder="Buscar disciplina...">
+            <div class="table-container">
+				
+				<div class="table-container">
+                <table id="tableDisciplina">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Disciplina</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div id="box-professores">
+            <div class="table-card"> 
+                <h2>Lista de Professores</h2>
+				<input type="text" id="filtroProfessor" placeholder="Buscar por matrícula...">
+                <div class="table-container professor">
+                    <table id="tableProfessor">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Matrícula</th>                              
+                                <th>Tipo</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalEditar" class="modal">
+  <div class="modal-content">
+    <h2>Editar Professor</h2>
+    <form id="formEditarProfessor">
+      <input type="hidden" id="editIdProfessor">
+
+      <label>Nome:</label>
+      <input type="text" id="editNomeProfessor" required>
+
+      <label>Email:</label>
+      <input type="email" id="editEmailProfessor" required>
+
+      <label>Senha:</label>
+      <input type="password" id="editSenhaProfessor" required>
+
+      <label>Matrícula:</label>
+      <input type="text" id="editMatriProfessor" required>
+
+      <label>Tipo:</label>
+      <select id="editTipoProfessor" required>
+          <option value="">Selecione o tipo</option>
+          <option value="0">Professor</option>
+          <option value="1">Coordenador</option>
+      </select>
+
+      <h3>Disciplinas Atribuídas</h3>
+      <div id="editListaDisciplinas" class="disciplinas-container"></div>
+
+      <div class="modal-buttons">
+        <button type="submit" id="btnAtualizar">Atualizar</button>
+        <button type="button" id="btnCancelar">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script th:src="@{/js/professor.js}"></script>
+</body>
+</html>

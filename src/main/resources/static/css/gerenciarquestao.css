@@ -1,0 +1,448 @@
+/* -------------------------------------------- */
+/* GERAIS                                       */
+/* -------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+    /* Fundos premium */
+    --cor-fundo-principal: linear-gradient(135deg, #0A0F1F 0%, #0D0D16 40%, #000000 100%);
+    --cor-cartao-fundo: rgba(255, 255, 255, 0.06);
+    --cor-borda-cartao: rgba(255, 255, 255, 0.10);
+    --cor-sombra-escura: rgba(0, 0, 0, 0.65);
+
+    /* Tipografia */
+    --cor-texto-principal: #E6E6E6;
+    --cor-texto-suave: #CFCFCF;
+
+    /* Destaques */
+    --cor-destaque-laranja: #FF7A45;
+    --cor-destaque-hover: #FFA675;
+    --cor-destaque-azul: #3B82F6; /* Usado para botões e foco */
+    --cor-destaque-azul-royal: #1F5AFF; /* Alternativa para destaque */
+
+    /* Acessibilidade */
+    --cor-erro: #FF4A4A;
+    --cor-sucesso: #3EE780;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: var(--cor-fundo-principal);
+    color: var(--cor-texto-principal);
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+/* -------------------------------------------- */
+/* LAYOUT E TÍTULOS                             */
+/* -------------------------------------------- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: var(--cor-cartao-fundo);
+    border-radius: 12px;
+    border: 1px solid var(--cor-borda-cartao);
+    box-shadow: 0 10px 30px var(--cor-sombra-escura);
+}
+
+.page-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--cor-destaque-laranja);
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--cor-borda-cartao);
+    text-align: center;
+}
+
+/* -------------------------------------------- */
+/* FILTRO E INPUTS                              */
+/* -------------------------------------------- */
+.filter-group {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center; /* Centraliza o filtro */
+}
+
+.filtro-input {
+    width: 100%;
+    max-width: 400px; /* Limita a largura do filtro */
+    padding: 12px 18px;
+    border: 1px solid var(--cor-borda-cartao);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.03);
+    color: var(--cor-texto-principal);
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.filtro-input:focus {
+    border-color: var(--cor-destaque-azul);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5); /* Sombra de foco azul */
+}
+
+/* Placeholder personalizado */
+.filtro-input::placeholder {
+    color: var(--cor-texto-suave);
+    opacity: 0.7;
+}
+
+/* -------------------------------------------- */
+/* TABELA                                       */
+/* -------------------------------------------- */
+/* Container da tabela com scroll vertical */
+.table-container {
+    width: 100%;
+    max-height: calc(8 * 80px); /* Limita a 6 linhas, 60px é a altura média da linha */
+    overflow-y: auto;
+    overflow-x: auto;
+    margin-bottom: 30px;
+    scrollbar-color: var(--cor-destaque-laranja) transparent;
+    scrollbar-width: thin;
+}
+
+/* Scrollbar customizada */
+.table-container::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.table-container::-webkit-scrollbar-thumb {
+    background-color: var(--cor-borda-cartao);
+    border-radius: 10px;
+}
+.table-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Mantém o layout normal da tabela */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px; /* Garante que a tabela não fique muito estreita */
+}
+
+/* Cabeçalhos fixos */
+.data-table thead th {
+    position: sticky;
+    top: 0;
+    background-color: rgba(255, 255, 255, 0.05);
+    z-index: 10;
+}
+
+/* Linhas e células */
+.data-table th, .data-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--cor-borda-cartao);
+}
+
+
+.data-table thead {
+    background-color: rgba(255, 255, 255, 0.05); /* Um pouco mais claro */
+    font-weight: 600;
+}
+
+.data-table th {
+    color: var(--cor-destaque-laranja);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.data-table tbody tr {
+    transition: background-color 0.2s;
+}
+
+.data-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.08); /* Fundo sutil ao passar o mouse */
+}
+
+.data-table td {
+    color: var(--cor-texto-suave);
+}
+
+/* Estilo específico para o texto da questão */
+.data-table td:nth-child(3) {
+    font-style: italic;
+    max-width: 300px; /* Limita a largura para quebra de linha */
+    white-space: normal;
+}
+
+/* Oculta labels de responsividade no desktop */
+.data-table td[data-label] {
+    position: relative;
+}
+.data-table td[data-label]::before {
+    display: none;
+}
+
+/* -------------------------------------------- */
+/* BOTÕES DE AÇÃO NA TABELA                     */
+/* -------------------------------------------- */
+.data-table td:last-child {
+    white-space: nowrap; /* Mantém os botões na mesma linha */
+}
+
+.action-btn {
+    padding: 8px 15px;
+    margin-right: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.action-btn:last-child {
+    margin-right: 0;
+}
+
+/* Botão Exibir (View) - Azul */
+.action-btn.view {
+    background-color: var(--cor-destaque-azul);
+}
+.action-btn.view:hover {
+    background-color: #5A99F8;
+    transform: translateY(-1px);
+}
+
+/* Botão Editar (Edit) - Laranja */
+.action-btn.edit {
+    background-color: var(--cor-destaque-laranja);
+}
+.action-btn.edit:hover {
+    background-color: var(--cor-destaque-hover);
+    transform: translateY(-1px);
+}
+
+/* Botão Excluir (Delete) - Erro/Vermelho */
+.action-btn.delete {
+    background-color: var(--cor-erro);
+}
+.action-btn.delete:hover {
+    background-color: #FF6666;
+    transform: translateY(-1px);
+}
+
+/* -------------------------------------------- */
+/* BOTÃO VOLTAR (Menu)                          */
+/* -------------------------------------------- */
+.btn-secondary {
+    display: block;
+    width: 200px;
+    padding: 12px 20px;
+    margin: 30px auto 0;
+    border: 2px solid var(--cor-destaque-azul);
+    border-radius: 8px;
+    background-color: transparent;
+    color: var(--cor-destaque-azul);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: var(--cor-destaque-azul);
+    color: #fff;
+}
+
+/* -------------------------------------------- */
+/* MODAL GERAL                                  */
+/* -------------------------------------------- */
+.modal {
+    display: none; /* Oculto por padrão */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8); /* Fundo escurecido */
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #1A1A2E; /* Fundo do modal mais escuro que o container */
+    margin: 5% auto;
+    padding: 30px;
+    border: 1px solid var(--cor-destaque-azul-royal);
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+}
+
+.close {
+    color: var(--cor-texto-principal);
+    float: right;
+    font-size: 30px;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: var(--cor-erro);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-title {
+    color: var(--cor-destaque-laranja);
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--cor-borda-cartao);
+}
+
+/* -------------------------------------------- */
+/* MODAL BODY - CAMPOS E BOTÕES                 */
+/* -------------------------------------------- */
+.modal-body label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--cor-texto-principal);
+}
+
+.modal-body input[type="text"],
+.modal-body textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--cor-borda-cartao);
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--cor-texto-principal);
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.modal-body input[type="text"]:focus,
+.modal-body textarea:focus {
+    border-color: var(--cor-destaque-azul);
+    outline: none;
+}
+
+.modal-body textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Campos readonly (Visualização) */
+.modal-body input[readonly],
+.modal-body textarea[readonly] {
+    background-color: rgba(255, 255, 255, 0.03);
+    color: var(--cor-texto-suave);
+    cursor: default;
+}
+
+/* Botão Salvar no Modal */
+#salvarBtn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--cor-sucesso);
+    color: #000;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#salvarBtn:hover {
+    background-color: #5BE799;
+    transform: translateY(-1px);
+}
+
+#msgSucesso {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* -------------------------------------------- */
+/* RESPONSIVIDADE (MOBILE FIRST)                */
+/* -------------------------------------------- */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 20px 10px;
+    }
+    
+    .container {
+        padding: 20px;
+    }
+
+    .page-title {
+        font-size: 1.8rem;
+    }
+
+    .data-table {
+        border: none;
+    }
+
+    .data-table thead {
+        display: none; /* Oculta o cabeçalho no mobile */
+    }
+
+    .data-table tr {
+        display: block;
+        margin-bottom: 15px;
+        padding: 15px;
+        background-color: var(--cor-cartao-fundo);
+        border: 1px solid var(--cor-borda-cartao);
+        border-radius: 8px;
+    }
+
+    .data-table td {
+        display: block;
+        text-align: right;
+        padding: 10px 0;
+        border-bottom: 1px dashed var(--cor-borda-cartao);
+    }
+    
+    .data-table td:last-child {
+        border-bottom: none;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    /* Exibe o label no mobile */
+    .data-table td[data-label]::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: 600;
+        color: var(--cor-destaque-laranja);
+    }
+
+    .action-btn {
+        margin-right: 10px;
+        margin-top: 5px;
+        display: inline-block;
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
+    
+    .data-table td:nth-child(3) {
+        text-align: right;
+        font-style: italic;
+    }
+}

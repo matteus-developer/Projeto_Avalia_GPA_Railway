@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Tela Disciplina</title>
+    <link rel="stylesheet" th:href="@{/css/disciplina.css}"> 
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projeto Avalia</title>
+</head>
+<body>
+  
+  <div class="header-container"> 
+      <div class="box">
+        <h1>Cadastro de Disciplina</h1>
+        <form action="">
+          <input type="text" class="disciplina" name="disciplina" placeholder="Disciplina">
+          <button>Salvar</button>
+        </form>
+      </div>
+      
+      <button id="btnVoltar" class="voltar">Voltar</button> 
+  </div>
+  
+  <div class="table">
+    <h1>Lista de Disciplinas</h1>
+	
+	<div class="filtro-container">
+	    <input 
+	      type="text" 
+	      id="campoBusca" 
+	      placeholder="Digite para filtrar as disciplinas..."
+	    >
+	  </div>
+	  <div class="table-scroll">
+	      <table id="tableDisciplina">
+	          <thead>
+	              <tr>
+	                  <th>Id</th>
+	                  <th>Disciplina</th>
+	                  <th>Ações</th>
+	              </tr>
+	          </thead>
+	          <tbody>
+	              <!-- Linhas da tabela -->
+	          </tbody>
+	      </table>
+	  </div>
+  
+</body>
+</html>
+     <script th:src="@{/js/disciplina.js}"></script>
+
+  </body>
+  
+</html>

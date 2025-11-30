@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerar Prova</title>
+    <link rel="stylesheet" href="/css/gerarProva.css">
+</head>
+<body>
+
+<div class="container">
+
+    <button id="btnVoltar" class="voltar">Voltar</button>
+
+    <h2>Gerar Prova</h2>
+
+    <label for="cabecalho">Cabeçalho da Prova:</label>
+    <textarea id="cabecalho" placeholder="Digite o cabeçalho da prova"></textarea>
+
+    <h3>Filtrar por Disciplina</h3>
+    <input type="text" id="filtroDisciplina" placeholder="Digite o nome da disciplina...">
+
+    <h3>Selecione as Questões</h3>
+	
+	<div class="table-container"> 
+    <table id="tabelaQuestoes">
+        <thead>
+        <tr>
+            <th>Selecionar</th>
+            <th>Enunciado</th>
+            <th>Disciplina</th>
+            <th>Visualizar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Preenchido pelo JS -->
+        </tbody>
+    </table>
+	</div>
+	
+    <button id="btnPreview" class="preview">Pré-visualizar Prova</button>
+    <button id="btnGerarPdf" class="gerar">Gerar PDF</button>
+
+</div>
+
+<!-- Modal Visualizar -->
+<div id="modalVisualizar" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="fecharModal()">&times;</span>
+        <h3>Questão</h3>
+        <div id="conteudoModal"></div>
+    </div>
+</div>
+
+<!-- Modal Preview -->
+<div id="modalPreview" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="fecharPreview()">&times;</span>
+        <h2>Pré-visualização da Prova</h2>
+        <div id="conteudoPreview"></div>
+    </div>
+</div>
+
+<!-- Primeiro: gerar JSON -->
+<script th:inline="javascript">
+    let disciplinasProfessor = /*[[${disciplinasProfessor}]]*/ [];
+    let questoes = /*[[${questoes}]]*/ [];
+</script>
+
+<!-- Depois: carregar o JS -->
+<script src="/js/gerarProva.js"></script>
+
+</body>
+</html>
+

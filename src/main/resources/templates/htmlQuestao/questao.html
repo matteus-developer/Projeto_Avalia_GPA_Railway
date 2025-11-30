@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Questão</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/css/questao.css">
+    <style>
+        /* Estilos para a área de Drag & Drop */
+        .drag-drop-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .drag-drop-area {
+            min-height: 200px;
+            border: 3px dashed #4CAF50;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background: rgba(76, 175, 80, 0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .drag-drop-area:hover {
+            background: rgba(76, 175, 80, 0.1);
+            border-color: #45a049;
+        }
+
+        .drag-drop-area.drag-over {
+            background: rgba(76, 175, 80, 0.2);
+            border-color: #2e7d32;
+            transform: scale(1.02);
+        }
+
+        .drag-drop-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        .drag-drop-text {
+            font-size: 18px;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .drag-drop-hint {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+        }
+
+        .file-input-hidden {
+            display: none;
+        }
+
+        .formato-exemplo {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #fff;
+            white-space: pre-line;
+        }
+
+        .progress-container {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .resultado-importacao {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .resultado-sucesso {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
+        }
+
+        .resultado-erro {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid #f44336;
+            color: #f44336;
+        }
+
+        .separador {
+            margin: 40px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .separador::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .separador span {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            position: relative;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 600;
+        }
+
+        details summary {
+            color: #fff;
+            cursor: pointer;
+            user-select: none;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        details summary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .destaque-novo {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animado"></div>
+
+    <main class="dashboard-container">
+        <section class="dashboard-card glass">
+            
+            <header class="form-header">
+                <h2 class="titulo-principal">Cadastrar Questões</h2>
+                <p class="subtitulo">Cadastre questões individualmente ou importe várias de uma vez através de arquivo</p>
+            </header>
+
+            <!-- ============================================ -->
+            <!-- SEÇÃO DRAG & DROP - IMPORTAÇÃO EM LOTE -->
+            <!-- ============================================ -->
+            <div class="drag-drop-section">
+                <h3 style="color: #fff; margin-bottom: 15px;">
+                    📂 Importação em Lote
+                </h3>
+                
+                <div class="drag-drop-area" id="dropArea">
+                    <div class="drag-drop-icon">📄</div>
+                    <div class="drag-drop-text">Arraste o arquivo aqui</div>
+                    <div class="drag-drop-hint">ou clique para selecionar (.txt)</div>
+                </div>
+
+                <input type="file" id="fileInput" class="file-input-hidden" accept=".txt">
+
+                <!-- Barra de progresso -->
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill">0%</div>
+                    </div>
+                </div>
+
+                <!-- Resultado da importação -->
+                <div class="resultado-importacao" id="resultadoImportacao"></div>
+
+                <!-- Formato esperado -->
+                <details>
+                    <summary>Visualizar Formato Esperado de Arquivo </summary>
+                    <div class="formato-exemplo">
+<strong>Exemplo Modelo para digitar as Questões':</strong>
+
+Sistemas Operacionais
+Qual é a principal função de um Sistema Operacional?
+Renderizar gráficos
+Executar apenas jogos
+Gerenciar hardware e software
+Traduzir linguagens de programação
+Criar redes sociais
+C
+
+Qual destes é um Sistema Operacional?
+Chrome
+Windows 11
+Excel
+GitHub
+Intel
+B
+
+<strong>👉 Quando mudar de disciplina, digite o novo nome:</strong>
+
+Banco de Dados
+O que significa SQL?
+System Query Logic
+Structured Query Language
+Super Quick List
+Secure Query Line
+Simple Queue Language
+B
+
+Uma chave primária deve ser:
+Sempre nula
+Repetida
+Única e não nula
+Apenas texto
+Opcional
+C
+
+<strong>💡 Regras simples:</strong>
+• Digite o nome da disciplina
+• Não esqueça de digitar corretamente, igual a lista de disciplinas.
+• Todas as questões seguintes usam essa disciplina
+• Para mudar, digite o novo nome da disciplina
+                    </div>
+                </details>
+            </div>
+
+            <div class="separador">
+                <span>OU CADASTRE MANUALMENTE</span>
+            </div>
+
+            <!-- ============================================ -->
+            <!-- FORMULÁRIO INDIVIDUAL (ORIGINAL) -->
+            <!-- ============================================ -->
+            <form id="formQuestao">
+                
+                <div class="input-group">
+                    <label for="textQuestao" class="input-label">Texto da Questão:</label>
+                    <textarea id="textQuestao" class="input-field textarea-field" rows="5" placeholder="Digite o enunciado completo da questão..." required></textarea>
+                </div>
+
+                <div class="alternativas-wrapper">
+                    <h3 class="section-title">Alternativas</h3>
+                    
+                    <div class="alternativa-group">
+                        <label for="alterA" class="alt-label">A:</label>
+                        <input type="text" id="alterA" class="input-field alt-input" placeholder="Alternativa A" required>
+                    </div>
+
+                    <div class="alternativa-group">
+                        <label for="alterB" class="alt-label">B:</label>
+                        <input type="text" id="alterB" class="input-field alt-input" placeholder="Alternativa B" required>
+                    </div>
+
+                    <div class="alternativa-group">
+                        <label for="alterC" class="alt-label">C:</label>
+                        <input type="text" id="alterC" class="input-field alt-input" placeholder="Alternativa C" required>
+                    </div>
+
+                    <div class="alternativa-group">
+                        <label for="alterD" class="alt-label">D:</label>
+                        <input type="text" id="alterD" class="input-field alt-input" placeholder="Alternativa D" required>
+                    </div>
+
+                    <div class="alternativa-group">
+                        <label for="alterE" class="alt-label">E:</label>
+                        <input type="text" id="alterE" class="input-field alt-input" placeholder="Alternativa E" required>
+                    </div>
+                </div>
+                
+                <div class="meta-data-group">
+                    
+                    <div class="input-group">
+                        <label for="resposta" class="input-label">Resposta Correta (A—E):</label>
+                        <input type="text" id="resposta" class="input-field resposta-field" maxlength="1" placeholder="Ex: B" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="selectDisciplina" class="input-label">Disciplina:</label>
+                        <select id="selectDisciplina" class="input-field select-field" required>
+                            <option value="" disabled selected>Selecione a disciplina</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="botoes-area">
+                    <button type="submit" class="btn primario btn-salvar">
+                        <span class="btn-icon">💾</span> Salvar Questão
+                    </button>
+                    <button type="button" id="btnVoltar" class="btn secundario btn-voltar">
+                        <span class="btn-icon">↩️</span> Voltar ao Menu
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script src="/js/questao.js"></script>
+</body>
+</html>

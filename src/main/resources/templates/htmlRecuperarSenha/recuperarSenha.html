@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recuperar Senha</title>
+
+    <!-- CSS específico da página -->
+    <link rel="stylesheet" href="/css/recuperarSenha.css">
+
+    <!-- JS separado -->
+    <script src="/js/recuperarSenha.js" defer></script>
+</head>
+<body>
+
+<main class="login-wrapper">
+    <section class="login-card glass-morphism">
+
+        <h2 class="card-title">Recuperar Senha</h2>
+        <p class="card-subtitle">Altere sua senha usando seu e-mail e matrícula</p>
+
+        <!-- Mensagem de erro -->
+        <div th:if="${erro}" class="erro-msg" role="alert">
+            <p th:text="${erro}"></p>
+        </div>
+
+        <!-- Formulário -->
+        <form id="formRecuperarSenha" method="POST" action="/recuperar-senha">
+            
+            <div class="input-group">
+
+                <label for="email" class="input-label">E-mail</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="form-input"
+                    placeholder="Digite seu e-mail institucional"
+                    aria-label="Digite seu e-mail"
+                    required
+                >
+
+                <label for="matricula" class="input-label">Matrícula</label>
+                <input
+                    type="text"
+                    id="matricula"
+                    name="matricula"
+                    class="form-input"
+                    placeholder="Digite sua matrícula"
+                    aria-label="Digite sua matrícula"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="submit-button complex-btn">Verificar</button>
+        </form>
+
+        <div class="extra-links">
+            <a href="/tela/login" class="link">Voltar ao login</a>
+        </div>
+
+    </section>
+</main>
+
+</body>
+</html>
+
+

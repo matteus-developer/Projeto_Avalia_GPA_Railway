@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - Portal Docente</title>
+
+    <!-- Fonte Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+
+    <!-- Texto animado -->
+    <header class="top-header">
+        <h1 class="bemvindo-texto">Bem vindo</h1>
+    </header>
+
+    <!-- Fundo animado -->
+    <div class="background-animado"></div>
+
+    <!-- Wrapper principal -->
+    <main class="login-wrapper">
+        
+        <section class="login-card glass-morphism">
+
+            <h2 class="card-title">Portal do Docente</h2>
+            <p class="card-subtitle">Acesse com sua matrícula institucional</p>
+
+            <!-- Mensagem de erro -->
+            <div th:if="${erro}" class="erro-msg" role="alert">
+                <p th:text="${erro}"></p>
+            </div>
+
+            <!-- Formulário -->
+            <form action="/login" method="POST" id="loginForm" class="login-form" autocomplete="off">
+
+                <div class="input-group">
+                    <label for="matriProfessor" class="input-label">Matrícula</label>
+                    <input 
+                        type="text" 
+                        id="matriProfessor" 
+                        name="matriProfessor" 
+                        required 
+                        class="form-input"
+                        placeholder="Digite sua matrícula"
+                        aria-label="Digite sua matrícula"
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="senhaProfessor" class="input-label">Senha</label>
+                    <input 
+                        type="password" 
+                        id="senhaProfessor" 
+                        name="senhaProfessor" 
+                        required 
+                        class="form-input"
+                        placeholder="Digite sua senha"
+                        aria-label="Digite sua senha"
+                    >
+                </div>
+
+                <button type="submit" class="submit-button complex-btn">
+                    Entrar
+                </button>
+
+                <div class="extra-links">
+                    <a href="/tela/recuperarSenha" class="link">Esqueceu sua senha?</a>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+    <!-- Script -->
+    <script src="/js/login.js"></script>
+
+</body>
+</html>
