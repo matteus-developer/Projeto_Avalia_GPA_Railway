@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import com.example.filter.SessionFilter; // Importe o novo Filter
+import com.example.filter.AuthorizationFilter;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
