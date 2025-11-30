@@ -25,14 +25,14 @@ public class MenuController {
         Integer idProfessor = (Integer) session.getAttribute("idProfessor");
 
         if (idProfessor == null) {
-            return "redirect:/login"; // não logado
+            return "redirect:/tela/login"; // não logado
         }
 
         // Busca o professor novamente no banco
         Professor professor = professorService.GetByidProfessor(idProfessor);
 
         if (professor == null) {
-            return "redirect:/login";
+            return "redirect:/tela/login";
         }
 
         // Envia dados para a tela
