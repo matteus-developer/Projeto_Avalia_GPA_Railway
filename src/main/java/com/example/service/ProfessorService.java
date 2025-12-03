@@ -36,6 +36,11 @@ public class ProfessorService {
     // Salvar novo professor + relacionamento
     @Transactional
     public Professor SalvarProfessor(ProfessorDTO dto) {
+
+        if (professorRepository.existsByMatriProfessor(dto.getMatriProfessor())) {
+            throw new RuntimeException("A matrícula " + dto.getMatriProfessor() + " já está cadastrada para outro professor/coordenador.");
+        }
+        
         Professor pro = new Professor();
         pro.setNomeProfessor(dto.getNomeProfessor());
         pro.setMatriProfessor(dto.getMatriProfessor());
@@ -89,6 +94,22 @@ public class ProfessorService {
     public java.util.Optional<Professor> AtualizarProfessor(int idProfessor, ProfessorDTO dto) {
         return professorRepository.findById(idProfessor)
                 .map(pro -> {
+
+                    String novaMatricula = dto.getMatriProfessor();
+                    String matriculaAtual = pro.getMatriProfessor();    
+                
+                    if (!matriculaAtual.equals(novaMatricula)) {
+                        
+                        // Busca o professor com a nova matrícula
+                        Professor professorComMesmaMatricula = professorRepository.findBymatriProfessor(novaMatricula);
+                        
+                        // Se for encontrado um professor E ele não for o professor atual (pelo ID), lança exceção.
+                        if (professorComMesmaMatricula != null && professorComMesmaMatricula.getIdProfessor() != idProfessor) {
+                             throw new RuntimeException("A matrícula " + novaMatricula + " já está cadastrada para outro professor/coordenador.");
+                        }
+                    }
+                    ////////////////////////////////////////////////
+                    
                     pro.setNomeProfessor(dto.getNomeProfessor());
                     pro.setMatriProfessor(dto.getMatriProfessor());
                     pro.setEmailProfessor(dto.getEmailProfessor());
