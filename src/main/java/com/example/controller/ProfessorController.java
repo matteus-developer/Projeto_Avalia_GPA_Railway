@@ -23,68 +23,73 @@ import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/professor")  // base para todos os endpoints
+@RequestMapping("/professor") 
 public class ProfessorController {
 
 	@Autowired
 	private com.example.service.ProfessorService professorService;
 	
-			//Lista todos os Professores cadastrados
-			@GetMapping("/list")
-		    public List<Professor> listar() {
-		        return professorService.ListarTodos();
-		    }
-			
-			//Busca o professor pelo ID
-			@GetMapping("/{id}")
-			public ResponseEntity<Professor> BuscarPorId(@PathVariable int id) {
-			    Professor professor = professorService.GetByidProfessor(id);
-			    if (professor != null) {
-			        return ResponseEntity.ok(professor);
-			    }
-			    return ResponseEntity.notFound().build();
-			}
-			
-			//Salva um novo Professor no banco de dados utilizando metodo salvarProfessor
-			@PostMapping("/salvar")
-			public ResponseEntity<?> criar(@Valid @RequestBody ProfessorDTO dto) {
-			    try {
-			        Professor pro = professorService.SalvarProfessor(dto);
-			        return ResponseEntity.status(201).body(pro);
+    // Lista todos os Professores cadastrados
+    @GetMapping("/list")
+    public List<Professor> listar() {
+        return professorService.ListarTodos();
+    }
+    
+    // Busca o professor pelo ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Professor> BuscarPorId(@PathVariable int id) {
+        Professor professor = professorService.GetByidProfessor(id);
+        if (professor != null) {
+            return ResponseEntity.ok(professor);
+        }
+        return ResponseEntity.notFound().build();
+    }
+    
+    // Salva um novo Professor no banco de dados utilizando metodo salvarProfessor
+    @PostMapping("/salvar")
+    public ResponseEntity<?> criar(@Valid @RequestBody ProfessorDTO dto) {
+        try {
+            Professor pro = professorService.SalvarProfessor(dto);
+            // Retorna 201 Created se for sucesso
+            return ResponseEntity.status(201).body(pro); 
 
-			    } catch (RuntimeException e) {
-			        return ResponseEntity
-			                .badRequest()
-			                .body(e.getMessage());
-			    }
-			}
+        } catch (RuntimeException e) {
+            // Se o ProfessorService lançar uma RuntimeException (por exemplo, Matrícula duplicada),
+            // o Controller retorna 400 Bad Request com a mensagem de erro.
+            return ResponseEntity
+                .badRequest() 
+                .body(e.getMessage()); // Mensagem: "A matrícula XXX já está cadastrada..."
+        }
+    }
 
-		    
-		  //Exclui um Professor pelo seu id 
-		    @DeleteMapping("/excluir/{idProfessor}")
-		    public ResponseEntity<Void> excluir(@PathVariable int idProfessor) {
-		        Professor professor = professorService.GetByidProfessor(idProfessor);
-		        if (professor == null) {
-		            return ResponseEntity.notFound().build();
-		        }
+    // Exclui um Professor pelo seu id 
+    @DeleteMapping("/excluir/{idProfessor}")
+    public ResponseEntity<Void> excluir(@PathVariable int idProfessor) {
+        Professor professor = professorService.GetByidProfessor(idProfessor);
+        if (professor == null) {
+            return ResponseEntity.notFound().build();
+        }
 
-		        professorService.ExcluirProfessor(idProfessor);
-		        return ResponseEntity.noContent().build();
-		    }
-		    
-			
-		  //Atualiza os dados do professor no Banco de dados utilizando o id do Professor
-		    @PutMapping("/atualizar/{idProfessor}")
-		    public ResponseEntity<Professor> atualizar(
-		            @PathVariable int idProfessor,
-		            @Valid @RequestBody ProfessorDTO dto) {
+        professorService.ExcluirProfessor(idProfessor);
+        return ResponseEntity.noContent().build();
+    }
+    
+    // Atualiza os dados do professor no Banco de dados utilizando o id do Professor
+    @PutMapping("/atualizar/{idProfessor}")
+    public ResponseEntity<?> atualizar( // Retorna '?' para permitir o erro
+            @PathVariable int idProfessor,
+            @Valid @RequestBody ProfessorDTO dto) {
 
-		        Optional<Professor> atualizado = professorService.AtualizarProfessor(idProfessor, dto);
-		        return atualizado
-		                .map(ResponseEntity::ok)
-		                .orElse(ResponseEntity.notFound().build());
-		    }
-			
-	
-	
+        try {
+            Optional<Professor> atualizado = professorService.AtualizarProfessor(idProfessor, dto);
+            return atualizado
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (RuntimeException e) {
+            // Trata a exceção de matrícula duplicada também na atualização
+            return ResponseEntity
+                .badRequest() 
+                .body(e.getMessage()); // Mensagem de erro do Service
+        }
+    }
 }
