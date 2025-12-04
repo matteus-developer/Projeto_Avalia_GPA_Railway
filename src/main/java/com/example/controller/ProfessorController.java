@@ -30,7 +30,8 @@ public class ProfessorController {
 	private com.example.service.ProfessorService professorService;
 	
     // Lista todos os Professores cadastrados
-    @GetMapping("/list")
+    @GetMapping("/listar")
+	@PreAuthorize("hasRole('COORDENADOR')")
     public List<Professor> listar() {
         return professorService.ListarTodos();
     }
@@ -47,6 +48,7 @@ public class ProfessorController {
     
     // Salva um novo Professor no banco de dados utilizando metodo salvarProfessor
     @PostMapping("/salvar")
+	@PreAuthorize("hasRole('COORDENADOR')")
     public ResponseEntity<?> criar(@Valid @RequestBody ProfessorDTO dto) {
         try {
             Professor pro = professorService.SalvarProfessor(dto);
@@ -64,6 +66,7 @@ public class ProfessorController {
 
     // Exclui um Professor pelo seu id 
     @DeleteMapping("/excluir/{idProfessor}")
+	@PreAuthorize("hasRole('COORDENADOR')")
     public ResponseEntity<Void> excluir(@PathVariable int idProfessor) {
         Professor professor = professorService.GetByidProfessor(idProfessor);
         if (professor == null) {
@@ -76,6 +79,7 @@ public class ProfessorController {
     
     // Atualiza os dados do professor no Banco de dados utilizando o id do Professor
     @PutMapping("/atualizar/{idProfessor}")
+	@PreAuthorize("hasRole('COORDENADOR')")
     public ResponseEntity<?> atualizar( // Retorna '?' para permitir o erro
             @PathVariable int idProfessor,
             @Valid @RequestBody ProfessorDTO dto) {
