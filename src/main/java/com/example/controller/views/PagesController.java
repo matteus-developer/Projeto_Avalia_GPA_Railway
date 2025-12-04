@@ -29,7 +29,7 @@ public class PagesController {
     }
 
     @GetMapping("/tela/professor")
-    public String mostrarTelaProfessor() {
+    public String mostrarTelaProfessor(Model model) {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
     boolean isCoordenador = auth.getAuthorities().stream()
