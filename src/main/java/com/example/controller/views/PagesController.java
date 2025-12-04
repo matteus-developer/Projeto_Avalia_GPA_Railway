@@ -3,7 +3,6 @@ package com.example.controller.views;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -27,7 +26,7 @@ public class PagesController {
     }
 
     @GetMapping("/tela/professor")
-    public String mostrarTelaProfessor(Authentication authentication, Model model) {
+    public String mostrarTelaProfessor() {
         return "htmlProfessor/professor"; 
     }
 
