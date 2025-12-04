@@ -30,7 +30,7 @@ public class ProfessorController {
 	private com.example.service.ProfessorService professorService;
 	
     // Lista todos os Professores cadastrados
-    @GetMapping("/listar")
+    @GetMapping("/list")
 	@PreAuthorize("hasRole('COORDENADOR')")
     public List<Professor> listar() {
         return professorService.ListarTodos();
