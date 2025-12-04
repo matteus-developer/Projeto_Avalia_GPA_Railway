@@ -247,7 +247,9 @@ document.addEventListener("click", function (e) {
 // =============================
 // ATUALIZAR PROFESSOR
 // =============================
-document.querySelector("#btnAtualizar").addEventListener("click", function () {
+document.querySelector("#formEditarProfessor").addEventListener("submit", function (e) {
+    e.preventDefault(); // Impede o envio padrão do formulário
+
     const id = document.querySelector("#editIdProfessor").value;
 
     const idsDisciplinas = [...document.querySelectorAll(".edit-check-disciplina:checked")]
@@ -268,27 +270,33 @@ document.querySelector("#btnAtualizar").addEventListener("click", function () {
         dto.senhaProfessor = senhaDigitada;
     }
 
+    console.log("Enviando atualização:", dto); // Log para debug
+
     fetch(`/professor/atualizar/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dto)
     })
     .then(res => {
+        console.log("Status da resposta:", res.status); // Log para debug
         if (res.status === 200 || res.status === 204) {
-            alert("Professor atualizado com sucesso!");
-            document.querySelector("#modalEditar").style.display = "none";
-            listarProfessores();
+            return res.status === 200 ? res.json() : null;
         } else {
             return res.text().then(msg => {
                 throw new Error(msg || "Erro ao atualizar");
             });
         }
     })
+    .then(() => {
+        alert("Professor atualizado com sucesso!");
+        document.querySelector("#modalEditar").style.display = "none";
+        listarProfessores();
+    })
     .catch(err => {
         console.error("Erro ao atualizar:", err);
-        alert(err.message);
+        alert("Erro ao atualizar: " + err.message);
     });
-}); // ✅ FECHAMENTO CORRETO DO addEventListener
+});
 
 // =============================
 // EXCLUIR PROFESSOR
