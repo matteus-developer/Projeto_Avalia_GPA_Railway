@@ -104,7 +104,7 @@ function listarDisciplinas() {
 // LISTAR PROFESSORES
 // =============================
 function listarProfessores() {
-    fetch("/professor/list")
+    fetch("/list")
         .then(res => res.json())
         .then(prof => {
 
