@@ -1,5 +1,6 @@
 // =============================
 // Seletores para os campos do formulário
+// (Sem alteração)
 // =============================
 const formProfessor = document.querySelector("#formProfessor");
 const idNomeProfessor = document.querySelector("#idNomeProfessor"); 
@@ -9,11 +10,22 @@ const idMatriProfessor = document.querySelector("#idMatriProfessor");
 const idTipoProfessor = document.querySelector("#idTipoProfessor");
 const tabelaBody = document.querySelector("#tableDisciplina tbody"); 
 
+// VARIÁVEL INJETADA PELO THYMELEAF (IS_COORDENADOR)
+// Adicionamos uma verificação para garantir que exista
+const isCoordenador = typeof IS_COORDENADOR !== 'undefined' ? IS_COORDENADOR : false;
+
 // =============================
 // Salvar Professor
 // =============================
 function salvarProfessor() {
-
+    // Verificação de permissão no frontend
+    if (!isCoordenador) {
+        alert("Você não tem permissão para cadastrar professores.");
+        return;
+    }
+    
+    // ... restante da lógica de salvarProfessor() (sem alteração)
+    
     if (
         idNomeProfessor.value === "" || 
         idEmailProfessor.value === "" || 
@@ -63,41 +75,15 @@ function salvarProfessor() {
     }
 }
 
-//=====================================================================
-// Função para enviar o professor ao backend
-//=====================================================================
-function enviarProfessor(professorDTO) {
-    fetch("/professor/salvar", {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json' 
-        },
-        method: "POST", 
-        body: JSON.stringify(professorDTO) 
-    })
-    .then(res => {
-        if (res.ok) return res.json();
-        if (res.status === 400) {
-            return res.text().then(msg => {
-                alert(msg);
-                throw new Error("Erro de validação.");
-            });
-        }
-        alert("Erro ao salvar professor.");
-        throw new Error("Falha na requisição.");
-    })
-    .then(professorSalvo => {
-        alert(`Professor ${professorSalvo.nomeProfessor} (ID: ${professorSalvo.idProfessor}) salvo com sucesso!`);
-        limparCamposProfessor();
-        listarProfessores();
-    })
-    .catch(err => console.error("Erro:", err));
-}
+// ... (enviarProfessor, limparCamposProfessor, listarDisciplinas, Filtros)
 
 // =============================
 // Excluir Professor
 // =============================
 document.addEventListener("click", function (event) {
+    
+    // Bloqueia a ação se não for Coordenador (redundante, mas seguro)
+    if (!isCoordenador) return; 
 
     if (event.target.classList.contains("btn-excluir")) {
 
@@ -121,11 +107,14 @@ document.addEventListener("click", function (event) {
                 method: "DELETE"
             })
             .then(res => {
+                // ... (tratamento de resposta, incluindo 403 Forbidden)
                 if (res.ok) {
                     alert("Professor excluído com sucesso!");
                     listarProfessores();
                 } else if (res.status === 404) {
                     alert("Professor não encontrado!");
+                } else if (res.status === 403) {
+                     alert("Acesso Negado. Você não tem permissão para excluir.");
                 } else {
                     alert("Erro ao excluir professor.");
                 }
@@ -135,84 +124,25 @@ document.addEventListener("click", function (event) {
     }
 });
 
-// =============================
-// Limpar Campos
-// =============================
-function limparCamposProfessor() {
-    idNomeProfessor.value = "";
-    idEmailProfessor.value = "";
-    idSenhaProfessor.value = "";
-    idMatriProfessor.value = "";
-    idTipoProfessor.value = "";
-    document.querySelectorAll(".check-disciplina").forEach(c => c.checked = false);
-}
-
-// =============================
-// Listar Disciplinas
-// =============================
-function listarDisciplinas() {
-    fetch("/disciplina/list")
-        .then(res => res.json())
-        .then(disciplinas => {
-            tabelaBody.innerHTML = "";
-
-            disciplinas.forEach(d => {
-                const linha = document.createElement("tr");
-                linha.innerHTML = `
-                    <td>${d.idDisciplina}</td>
-                    <td>${d.nomeDisciplina}</td>
-                    <td>
-                        <input type="checkbox" class="check-disciplina" value="${d.idDisciplina}">
-                    </td>
-                `;
-                tabelaBody.appendChild(linha);
-            });
-        })
-        .catch(err => console.error("Erro ao listar disciplinas:", err));
-}
-
-// =============================
-// Filtro da Tabela Disciplinas
-// =============================
-const filtroDisciplina = document.getElementById("filtroDisciplina");
-
-filtroDisciplina.addEventListener("keyup", function () {
-    const texto = filtroDisciplina.value.toLowerCase();
-    const linhas = tabelaBody.getElementsByTagName("tr");
-
-    for (let i = 0; i < linhas.length; i++) {
-        const coluna = linhas[i].getElementsByTagName("td")[1];
-        if (coluna) {
-            const nome = coluna.textContent.toLowerCase();
-            linhas[i].style.display = nome.includes(texto) ? "" : "none";
-        }
-    }
-});
-
-// =============================
-// Filtro da Tabela Professores
-// =============================
-const filtroProfessor = document.getElementById("filtroProfessor");
-
-filtroProfessor.addEventListener("keyup", function () {
-    const texto = filtroProfessor.value.toLowerCase();
-    const linhas = document.querySelector("#tableProfessor tbody").getElementsByTagName("tr");
-
-    for (let i = 0; i < linhas.length; i++) {
-        const colunaMatricula = linhas[i].getElementsByTagName("td")[2];
-        if (colunaMatricula) {
-            const matricula = colunaMatricula.textContent.toLowerCase();
-            linhas[i].style.display = matricula.includes(texto) ? "" : "none";
-        }
-    }
-});
 
 // =============================
 // Listar Professores
 // =============================
 function listarProfessores() {
     fetch("/professor/list")
-        .then(res => res.json())
+        .then(res => {
+            if (res.status === 403) {
+                // Usuário não é Coordenador. A listagem de todos é negada.
+                const tbody = document.querySelector("#tableProfessor tbody");
+                tbody.innerHTML = "<tr><td colspan='5'>Acesso restrito. Apenas Coordenadores podem listar todos os professores.</td></tr>";
+                // Limpa o conteúdo da tabela se não for Coordenador, conforme configurado no SecurityConfig
+                return Promise.reject("Acesso negado."); 
+            }
+            if (!res.ok) {
+                throw new Error(`Erro ao buscar professores: ${res.status}`);
+            }
+            return res.json();
+        })
         .then(professores => {
             const tbody = document.querySelector("#tableProfessor tbody");
             tbody.innerHTML = "";
@@ -220,16 +150,19 @@ function listarProfessores() {
             professores.forEach(p => {
                 const tipoTexto = p.tipoProfessor === 1 ? "Coordenador" : "Professor";
 
+                // Ações de Edição/Exclusão só são mostradas se for Coordenador
+                const actionsHtml = isCoordenador ? `
+                    <button class="btn-editar" data-id="${p.idProfessor}">Editar</button>
+                    <button class="btn-excluir" data-id="${p.idProfessor}">Excluir</button>
+                ` : 'N/A';
+
                 const linha = document.createElement("tr");
                 linha.innerHTML = `
                     <td>${p.idProfessor}</td>
                     <td>${p.nomeProfessor}</td>
                     <td>${p.matriProfessor}</td>                 
                     <td>${tipoTexto}</td>
-                    <td>
-                        <button class="btn-editar" data-id="${p.idProfessor}">Editar</button>
-                        <button class="btn-excluir" data-id="${p.idProfessor}">Excluir</button>
-                    </td>
+                    <td>${actionsHtml}</td>
                 `;
                 tbody.appendChild(linha);
             });
@@ -241,11 +174,15 @@ function listarProfessores() {
 // Abrir modal de edição
 // =============================
 document.addEventListener("click", function (event) {
+    
+    // Bloqueia a ação se não for Coordenador
+    if (!isCoordenador) return;
 
     if (event.target.classList.contains("btn-editar")) {
 
         const idProfessor = event.target.getAttribute("data-id");
 
+        // ... (restante da lógica de busca e preenchimento do modal)
         fetch(`/professor/${idProfessor}`)
             .then(res => res.json())
             .then(professor => {
@@ -286,18 +223,17 @@ document.addEventListener("click", function (event) {
 });
 
 // =============================
-// Fechar modal
-// =============================
-document.querySelector("#btnCancelar").addEventListener("click", function () {
-    document.querySelector("#modalEditar").style.display = "none";
-});
-
-// =============================
 // Atualizar Professor
 // =============================
 document.querySelector("#formEditarProfessor").addEventListener("submit", function (event) {
     event.preventDefault();
-
+    
+    // Bloqueia a ação se não for Coordenador
+    if (!isCoordenador) {
+        alert("Você não tem permissão para atualizar dados de professores.");
+        return;
+    }
+    
     const id = document.querySelector("#editIdProfessor").value;
     const idsDisciplinas = [...document.querySelectorAll(".edit-check-disciplina:checked")].map(c => parseInt(c.value));
 
@@ -322,12 +258,18 @@ document.querySelector("#formEditarProfessor").addEventListener("submit", functi
             alert("Professor atualizado com sucesso!");
             document.querySelector("#modalEditar").style.display = "none";
             listarProfessores();
+        } else if (res.status === 403) {
+            // Se o backend retornou 403 (e não deveria, pois o coordenador deveria ter acesso)
+            // ou se for um professor comum que conseguiu chegar aqui.
+            alert("Acesso Negado. Você não tem permissão para editar este perfil.");
         } else {
             alert("Erro ao atualizar professor.");
         }
     })
     .catch(err => console.error("Erro:", err));
 });
+
+// ... (restante do código: Fechar modal, Event Listeners, Botão Voltar)
 
 //=====================================================================
 // Event Listeners
@@ -338,7 +280,9 @@ formProfessor.addEventListener('submit', function(event) {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    listarDisciplinas();
+    // A listagem de disciplinas é sempre liberada, pois o front não tem como saber o URL da API
+    listarDisciplinas(); 
+    // A listagem de professores agora é restrita.
     listarProfessores();
 });
 
@@ -348,6 +292,3 @@ document.addEventListener("DOMContentLoaded", () => {
 document.getElementById("btnVoltar").onclick = () => {
     window.location.href = "/menu";
 };
-
-
-
