@@ -15,8 +15,11 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "professor") // <-- IMPORTANTE
-public class Professor {
+public class Professor implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +47,7 @@ public class Professor {
         joinColumns = @JoinColumn(name = "idProfessor"), 
         inverseJoinColumns = @JoinColumn(name = "idDisciplina")
     )
+    @JsonIgnoreProperties("professores")
     private List<Disciplina> disciplinas = new ArrayList<>();
 
     public Professor() {}
