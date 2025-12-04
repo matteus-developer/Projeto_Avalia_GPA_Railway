@@ -103,31 +103,47 @@ function listarDisciplinas() {
 // =============================
 // LISTAR PROFESSORES
 // =============================
+// professor.js (Aplique esta correção)
 function listarProfessores() {
-    fetch("/list")
-        .then(res => res.json())
+    // 1. A URL é correta (fetch("/professor/list"))
+    fetch("/professor/list")
+        .then(res => {
+            if (!res.ok) { // Verifica se o status é 200-299 (ou se houve falha de segurança/rede)
+                throw new Error("Falha ao carregar lista de professores. Status: " + res.status);
+            }
+            return res.json();
+        })
         .then(prof => {
+            // 2. ADICIONE UM LOG AQUI para ter certeza que o JSON está chegando
+            console.log("Dados de Professores recebidos:", prof); 
 
             const tbody = document.querySelector("#tableProfessor tbody");
             tbody.innerHTML = "";
 
-            prof.forEach(p => {
-                const tipoTexto = p.tipoProfessor === 1 ? "Coordenador" : "Professor";
-
-                const linha = document.createElement("tr");
-                linha.innerHTML = `
-                    <td>${p.idProfessor}</td>
-                    <td>${p.nomeProfessor}</td>
-                    <td>${p.matriProfessor}</td>                 
-                    <td>${tipoTexto}</td>
-                    <td>
-                        <button class="btn-editar" data-id="${p.idProfessor}">Editar</button>
-                        <button class="btn-excluir" data-id="${p.idProfessor}">Excluir</button>
-                    </td>
-                `;
-
-                tbody.appendChild(linha);
-            });
+            // 3. Verifique se 'prof' é uma array antes de iterar
+            if (Array.isArray(prof)) {
+                prof.forEach(p => {
+                    const tipoTexto = p.tipoProfessor === 1 ? "Coordenador" : "Professor";
+                    const linha = document.createElement("tr");
+                    linha.innerHTML = `
+                        <td>${p.idProfessor}</td>
+                        <td>${p.nomeProfessor}</td>
+                        <td>${p.matriProfessor}</td>
+                        <td>${tipoTexto}</td>
+                        <td>
+                            <button class="btn-editar" data-id="${p.idProfessor}">Editar</button>
+                            <button class="btn-excluir" data-id="${p.idProfessor}">Excluir</button>
+                        </td>
+                    `;
+                    tbody.appendChild(linha);
+                });
+            } else {
+                console.error("Dados de professores não são uma lista:", prof);
+            }
+        })
+        .catch(err => {
+            // 4. Se a requisição falhar, você verá o erro no console
+            console.error("Erro na requisição /professor/list:", err); 
         });
 }
 
